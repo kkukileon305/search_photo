@@ -1,17 +1,21 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import getUnsplashData from './API';
 import PhotoLi from './components/PhotoLi';
+import PhotoUl from './components/PhotoUl';
 import Skeleton from './components/Skeleton';
+import { StyledParagraph, StyledTitle } from './styles/StyledText';
 import { NUM_OF_PHOTO_PER_PAGE } from './utils/constants';
 import { PhotoData } from './utils/PhotoData';
+import ErrorDiv from './components/Error';
 
 function App() {
   const [columnPage, setColumnPage] = useState(0);
   const [rowPage, setRowPage] = useState(1);
   const [search, setSearch] = useState('');
   const [photoList, setPhotoList] = useState<PhotoData[]>([]);
+  const [error, setError] = useState<boolean>(false);
 
   const [target, setTarget] = useState<any>();
 
@@ -20,14 +24,20 @@ function App() {
     const value = (event.currentTarget[0] as HTMLInputElement).value;
 
     setSearch(value);
+    setError(false);
     setColumnPage(0);
     setRowPage(1);
     setPhotoList([]);
 
     if (value) {
-      setPhotoList([...Array(NUM_OF_PHOTO_PER_PAGE).fill(null)]);
-      const data = await getUnsplashData(value, NUM_OF_PHOTO_PER_PAGE, rowPage);
-      setPhotoList([...data.results]);
+      try {
+        setPhotoList([...Array(NUM_OF_PHOTO_PER_PAGE).fill(null)]);
+        const data = await getUnsplashData(value, NUM_OF_PHOTO_PER_PAGE, rowPage);
+        setPhotoList([...data.results]);
+      } catch (error) {
+        setError(true);
+        setPhotoList([]);
+      }
     }
   };
 
@@ -72,28 +82,20 @@ function App() {
         </div>
       </Form>
 
-      <ul
-        style={{
-          display: 'flex', //
-          flexWrap: 'wrap',
-          gap: '30px',
-          margin: '30px 0 0 0',
-          padding: '0',
-          width: '90vw',
-        }}
-      >
+      <PhotoUl>
+        {error && <ErrorDiv />}
         {photoList.map((photoData, i) =>
           photoData ? (
             <PhotoLi ref={setTarget} key={i} photoData={photoData}>
               <div></div>
-              <h3>{photoData.alt_description}</h3>
-              <p>{photoData.user.name}</p>
+              <StyledTitle>{photoData.alt_description}</StyledTitle>
+              <StyledParagraph>{photoData.user.name}</StyledParagraph>
             </PhotoLi> //
           ) : (
             <Skeleton key={i} />
           )
         )}
-      </ul>
+      </PhotoUl>
     </>
   );
 }

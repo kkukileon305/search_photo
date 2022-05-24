@@ -16,20 +16,6 @@ const PhotoLi = styled.li<PhotoLiProps>`
     background-position: center;
     background-size: cover;
   }
-
-  h3 {
-    width: 80%;
-    height: 20px;
-    margin: 0;
-    overflow: hidden;
-    font-size: 16px;
-  }
-
-  p {
-    width: 50%;
-    height: 20px;
-    overflow: hidden;
-  }
 `;
 
 export default PhotoLi;
