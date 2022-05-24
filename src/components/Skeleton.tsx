@@ -12,11 +12,19 @@ const sweepKeyframe = keyframes`
 `;
 
 const StyledSkeleton = styled.div`
-  width: calc((100% - 30px) / 2);
+  width: calc((100% - 60px) / 3);
   height: 300px;
   ${flexStartCol}
   align-items: flex-start;
   gap: 20px;
+
+  @media screen and (max-width: 1024px) {
+    width: calc((100% - 30px) / 2);
+  }
+
+  @media screen and (max-width: 570px) {
+    width: calc(100%);
+  }
 `;
 
 const SkeletonImage = styled.div`

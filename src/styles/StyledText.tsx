@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const StyledTitle = styled.h3`
   font-weight: bold;
-  font-size: 30px;
+  font-size: 24px;
   width: 80%;
   height: 30px;
   overflow: hidden;

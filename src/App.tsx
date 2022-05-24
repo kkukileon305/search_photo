@@ -36,7 +36,7 @@ function App() {
         setPhotoList([...data.results]);
       } catch (error) {
         setError(true);
-        setPhotoList([]);
+        setPhotoList([...photoList]);
       }
     }
   };
