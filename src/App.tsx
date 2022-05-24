@@ -79,7 +79,7 @@ function App() {
     <>
       <Form style={{ width: '90vw' }} onSubmit={onSubmitHandler}>
         <Form.Label onClick={() => console.log(target)} style={{ fontSize: '40px' }}>
-          Search Image
+          Search Image!
         </Form.Label>
         <div style={{ display: 'flex', gap: '10px' }}>
           <Form.Control type='text' placeholder='Image' />
