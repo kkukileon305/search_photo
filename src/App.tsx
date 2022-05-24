@@ -17,8 +17,8 @@ function App() {
   const [photoList, setPhotoList] = useState<PhotoData[]>([]);
   const [error, setError] = useState<boolean>(false);
 
-  // any 해결하기
   // top 버튼 구현하기
+  // 데이터가 없을 경우 처리하기
   const [target, setTarget] = useState<HTMLLIElement | null>();
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
