@@ -7,7 +7,6 @@ html {
   padding: 0;
   ${flexStartCol}
   overflow-x: hidden;
-  overflow-y: auto;
 }
   body {
     margin: 0;
@@ -16,7 +15,11 @@ html {
     ${flexStartCol}
     padding: 0;
     padding-top: calc(30vh);
+    overflow-y: auto;
     
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   * {

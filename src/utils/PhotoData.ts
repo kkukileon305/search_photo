@@ -6,6 +6,7 @@ export interface UnsplashResult {
 
 export interface PhotoData {
   alt_description: string;
+  id: string;
   urls: {
     full: string;
     raw: string;

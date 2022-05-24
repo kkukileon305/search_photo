@@ -8,8 +8,8 @@ import { NUM_OF_PHOTO_PER_PAGE } from './utils/constants';
 import { PhotoData } from './utils/PhotoData';
 
 function App() {
-  const [columnPage, setColumnPage] = useState(1);
-  const [rowPage, setRowPage] = useState(0);
+  const [columnPage, setColumnPage] = useState(0);
+  const [rowPage, setRowPage] = useState(1);
   const [search, setSearch] = useState('');
   const [photoList, setPhotoList] = useState<PhotoData[]>([]);
 
@@ -19,12 +19,14 @@ function App() {
     event.preventDefault();
     const value = (event.currentTarget[0] as HTMLInputElement).value;
 
-    setColumnPage(1);
-    setRowPage(0);
+    setSearch(value);
+    setColumnPage(0);
+    setRowPage(1);
     setPhotoList([]);
+
     if (value) {
       setPhotoList([...Array(NUM_OF_PHOTO_PER_PAGE).fill(null)]);
-      const data = await getUnsplashData(value, NUM_OF_PHOTO_PER_PAGE, columnPage);
+      const data = await getUnsplashData(value, NUM_OF_PHOTO_PER_PAGE, rowPage);
       setPhotoList([...data.results]);
     }
   };
@@ -39,7 +41,22 @@ function App() {
       });
     });
     target && lastLiObserver.observe(target);
-  }, [target]);
+  }, [target, rowPage]);
+
+  useEffect(() => {
+    if (columnPage) {
+      setPhotoList([...photoList, ...Array(NUM_OF_PHOTO_PER_PAGE).fill(null)]);
+      getUnsplashData(search, NUM_OF_PHOTO_PER_PAGE * (columnPage + 1), rowPage) //
+        .then(({ results }) => {
+          const newData = results.slice(-NUM_OF_PHOTO_PER_PAGE);
+          const noOverlapData = newData.filter((e) => !photoList.map((k) => k.id).includes(e.id));
+
+          setPhotoList([...photoList, ...noOverlapData]);
+
+          noOverlapData.length < NUM_OF_PHOTO_PER_PAGE && setRowPage(rowPage + 1);
+        });
+    }
+  }, [columnPage]);
 
   return (
     <>
