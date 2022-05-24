@@ -54,7 +54,7 @@ function App() {
         });
       },
       {
-        threshold: 1,
+        threshold: 0.1,
       }
     );
     target && lastLiObserver.observe(target);
