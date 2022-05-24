@@ -17,7 +17,9 @@ function App() {
   const [photoList, setPhotoList] = useState<PhotoData[]>([]);
   const [error, setError] = useState<boolean>(false);
 
-  const [target, setTarget] = useState<any>();
+  // any 해결하기
+  // top 버튼 구현하기
+  const [target, setTarget] = useState<HTMLLIElement | null>();
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -42,14 +44,19 @@ function App() {
   };
 
   useEffect(() => {
-    const lastLiObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.intersectionRatio > 0 && entry.isIntersecting) {
-          lastLiObserver.unobserve(target);
-          setColumnPage(columnPage + 1);
-        }
-      });
-    });
+    const lastLiObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.intersectionRatio > 0 && entry.isIntersecting) {
+            lastLiObserver.unobserve(target as HTMLLIElement);
+            setColumnPage(columnPage + 1);
+          }
+        });
+      },
+      {
+        threshold: 1,
+      }
+    );
     target && lastLiObserver.observe(target);
   }, [target, rowPage]);
 

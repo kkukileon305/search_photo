@@ -1,1 +1,1 @@
-export const NUM_OF_PHOTO_PER_PAGE = 6;
+export const NUM_OF_PHOTO_PER_PAGE = 12;
