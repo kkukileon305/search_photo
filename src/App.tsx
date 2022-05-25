@@ -21,10 +21,6 @@ function App() {
   const [done, setDone] = useState<boolean>(false);
   const [topBtn, setTopBtn] = useState<boolean>(false);
 
-  /**
-   * Top 버튼과 페이지 구현
-   * 페이지가 끝났을 경우 처리하기
-   */
   const [target, setTarget] = useState<HTMLLIElement | null>();
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
