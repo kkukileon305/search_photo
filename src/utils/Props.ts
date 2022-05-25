@@ -10,3 +10,7 @@ export interface TitleProps extends CommonProps {}
 export interface PhotoLiProps extends CommonProps {
   photoData: PhotoData;
 }
+
+export interface TopBtnProps extends CommonProps {
+  page: number;
+}

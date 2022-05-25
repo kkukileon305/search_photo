@@ -10,18 +10,20 @@ import { NUM_OF_PHOTO_PER_PAGE } from './utils/constants';
 import { PhotoData } from './utils/PhotoData';
 import ErrorDiv from './components/Error';
 import Done from './components/Done';
+import TopBtn from './components/TopBtn';
 
 function App() {
   const [columnPage, setColumnPage] = useState(0);
-  const [rowPage, setRowPage] = useState(1);
   const [search, setSearch] = useState('');
+  const [realPage, setRealPage] = useState(1);
   const [photoList, setPhotoList] = useState<PhotoData[]>([]);
   const [error, setError] = useState<boolean>(false);
   const [done, setDone] = useState<boolean>(false);
 
-  // top 버튼 구현하기
-  // 데이터가 없을 경우 처리하기
-  // 검색시 개수가 적을 경우 무한 로딩
+  /**
+   * Top 버튼과 페이지 구현
+   * 페이지가 끝났을 경우 처리하기
+   */
   const [target, setTarget] = useState<HTMLLIElement | null>();
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -32,20 +34,19 @@ function App() {
     setError(false);
     setDone(false);
     setColumnPage(0);
-    setRowPage(1);
     setPhotoList([]);
 
     if (value) {
       try {
         setPhotoList([...Array(NUM_OF_PHOTO_PER_PAGE).fill(null)]);
-        const data = await getUnsplashData(value, NUM_OF_PHOTO_PER_PAGE, rowPage);
+        const data = await getUnsplashData(value, NUM_OF_PHOTO_PER_PAGE);
 
         data.results.length < NUM_OF_PHOTO_PER_PAGE && setDone(true);
 
         setPhotoList([...data.results]);
       } catch (error) {
         setError(true);
-        setPhotoList([...photoList]);
+        setPhotoList([]);
       }
     }
   };
@@ -56,6 +57,8 @@ function App() {
         entries.forEach((entry) => {
           if (entry.intersectionRatio > 0 && entry.isIntersecting) {
             lastLiObserver.unobserve(target as HTMLLIElement);
+            console.log(1);
+            setRealPage(realPage + 1);
             setColumnPage(columnPage + 1);
           }
         });
@@ -65,19 +68,19 @@ function App() {
       }
     );
     !error && !done && target && lastLiObserver.observe(target);
-  }, [target, rowPage]);
+  }, [target]);
 
   useEffect(() => {
     if (columnPage) {
       setPhotoList([...photoList, ...Array(NUM_OF_PHOTO_PER_PAGE).fill(null)]);
-      getUnsplashData(search, NUM_OF_PHOTO_PER_PAGE * (columnPage + 1), rowPage) //
+      getUnsplashData(search, NUM_OF_PHOTO_PER_PAGE * (columnPage + 1)) //
         .then(({ results }) => {
           const newData = results.slice(-NUM_OF_PHOTO_PER_PAGE);
           const noOverlapData = newData.filter((e) => !photoList.map((k) => k.id).includes(e.id));
 
           setPhotoList([...photoList, ...noOverlapData]);
 
-          noOverlapData.length < NUM_OF_PHOTO_PER_PAGE && setRowPage(rowPage + 1);
+          noOverlapData.length < NUM_OF_PHOTO_PER_PAGE && setDone(true);
         });
     }
   }, [columnPage]);
@@ -95,7 +98,7 @@ function App() {
           </Button>
         </div>
       </Form>
-
+      <TopBtn page={realPage} />
       <PhotoUl>
         {photoList.map((photoData, i) =>
           photoData ? (
