@@ -1,8 +1,8 @@
-import { RiEmotionSadLine } from 'react-icons/ri';
 import styled from 'styled-components';
 import { flexCenterRow } from '../styles/flex';
+import { RiEmotionSadLine } from 'react-icons/ri';
 
-const StyledError = styled.div`
+const StyledDone = styled.div`
   width: 100%;
   height: 200px;
   ${flexCenterRow}
@@ -10,13 +10,13 @@ const StyledError = styled.div`
   gap: 20px;
 `;
 
-const ErrorDiv = () => {
+const Done = () => {
   return (
-    <StyledError>
+    <StyledDone>
       <RiEmotionSadLine />
-      Please, try 1hours later...
-    </StyledError>
+      There is no more photo...
+    </StyledDone>
   );
 };
 
-export default ErrorDiv;
+export default Done;

@@ -9,6 +9,7 @@ import { StyledParagraph, StyledTitle } from './styles/StyledText';
 import { NUM_OF_PHOTO_PER_PAGE } from './utils/constants';
 import { PhotoData } from './utils/PhotoData';
 import ErrorDiv from './components/Error';
+import Done from './components/Done';
 
 function App() {
   const [columnPage, setColumnPage] = useState(0);
@@ -16,9 +17,11 @@ function App() {
   const [search, setSearch] = useState('');
   const [photoList, setPhotoList] = useState<PhotoData[]>([]);
   const [error, setError] = useState<boolean>(false);
+  const [done, setDone] = useState<boolean>(false);
 
   // top 버튼 구현하기
   // 데이터가 없을 경우 처리하기
+  // 검색시 개수가 적을 경우 무한 로딩
   const [target, setTarget] = useState<HTMLLIElement | null>();
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -27,6 +30,7 @@ function App() {
 
     setSearch(value);
     setError(false);
+    setDone(false);
     setColumnPage(0);
     setRowPage(1);
     setPhotoList([]);
@@ -35,6 +39,9 @@ function App() {
       try {
         setPhotoList([...Array(NUM_OF_PHOTO_PER_PAGE).fill(null)]);
         const data = await getUnsplashData(value, NUM_OF_PHOTO_PER_PAGE, rowPage);
+
+        data.results.length < NUM_OF_PHOTO_PER_PAGE && setDone(true);
+
         setPhotoList([...data.results]);
       } catch (error) {
         setError(true);
@@ -57,7 +64,7 @@ function App() {
         threshold: 0.1,
       }
     );
-    target && lastLiObserver.observe(target);
+    !error && !done && target && lastLiObserver.observe(target);
   }, [target, rowPage]);
 
   useEffect(() => {
@@ -90,7 +97,6 @@ function App() {
       </Form>
 
       <PhotoUl>
-        {error && <ErrorDiv />}
         {photoList.map((photoData, i) =>
           photoData ? (
             <PhotoLi ref={setTarget} key={i} photoData={photoData}>
@@ -102,6 +108,8 @@ function App() {
             <Skeleton key={i} />
           )
         )}
+        {done && <Done />}
+        {error && <ErrorDiv />}
       </PhotoUl>
     </>
   );
