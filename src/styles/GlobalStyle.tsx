@@ -11,15 +11,11 @@ html {
   body {
     margin: 0;
     width: 100vw;
-    height: 100vh;
     ${flexStartCol}
     padding: 0;
     padding-top: 10vh;
     overflow-y: auto;
-    
-    &::-webkit-scrollbar {
-      display: none;
-    }
+
   }
 
   * {

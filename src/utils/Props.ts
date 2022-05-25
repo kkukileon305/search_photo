@@ -13,4 +13,5 @@ export interface PhotoLiProps extends CommonProps {
 
 export interface TopBtnProps extends CommonProps {
   page: number;
+  onClick: () => void;
 }

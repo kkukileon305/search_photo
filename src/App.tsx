@@ -19,6 +19,7 @@ function App() {
   const [photoList, setPhotoList] = useState<PhotoData[]>([]);
   const [error, setError] = useState<boolean>(false);
   const [done, setDone] = useState<boolean>(false);
+  const [topBtn, setTopBtn] = useState<boolean>(false);
 
   /**
    * Top 버튼과 페이지 구현
@@ -85,12 +86,26 @@ function App() {
     }
   }, [columnPage]);
 
+  // Scroll handler
+  const scrollHandler = () => {
+    const { scrollY } = window;
+    scrollY > 30 ? setTopBtn(true) : setTopBtn(false);
+  };
+
+  // Top Btn Eventlistener and handler
+  useEffect(() => {
+    window.addEventListener('scroll', scrollHandler);
+    return () => {
+      window.removeEventListener('scroll', scrollHandler);
+    };
+  }, []);
+
+  const topBtnHandler = () => (document.documentElement.scrollTop = 0);
+
   return (
     <>
       <Form style={{ width: '90vw' }} onSubmit={onSubmitHandler}>
-        <Form.Label onClick={() => console.log(target)} style={{ fontSize: '40px' }}>
-          Search Image!
-        </Form.Label>
+        <Form.Label style={{ fontSize: '40px' }}>Search Image!</Form.Label>
         <div style={{ display: 'flex', gap: '10px' }}>
           <Form.Control type='text' placeholder='Image' />
           <Button variant='primary' type='submit'>
@@ -98,7 +113,7 @@ function App() {
           </Button>
         </div>
       </Form>
-      <TopBtn page={realPage} />
+      {topBtn && <TopBtn onClick={topBtnHandler} page={realPage} />}
       <PhotoUl>
         {photoList.map((photoData, i) =>
           photoData ? (
