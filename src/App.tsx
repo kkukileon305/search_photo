@@ -11,6 +11,7 @@ import { PhotoData } from './utils/PhotoData';
 import ErrorDiv from './components/Error';
 import Done from './components/Done';
 import TopBtn from './components/TopBtn';
+import PhotoModal from './components/Modal';
 
 function App() {
   const [columnPage, setColumnPage] = useState(0);
@@ -20,6 +21,8 @@ function App() {
   const [error, setError] = useState<boolean>(false);
   const [done, setDone] = useState<boolean>(false);
   const [topBtn, setTopBtn] = useState<boolean>(false);
+  const [modalState, setModalState] = useState(false);
+  const [modalURL, setModalURL] = useState('');
 
   const [target, setTarget] = useState<HTMLLIElement | null>();
 
@@ -46,6 +49,11 @@ function App() {
         setPhotoList([]);
       }
     }
+  };
+
+  const divClickHandler = (url: string) => {
+    setModalURL(url);
+    setModalState(true);
   };
 
   useEffect(() => {
@@ -100,6 +108,7 @@ function App() {
 
   return (
     <>
+      {modalState && <PhotoModal photoURL={modalURL} setModalState={setModalState} />}
       <Form style={{ width: '90vw' }} onSubmit={onSubmitHandler}>
         <Form.Label style={{ fontSize: '40px' }}>Search Image!</Form.Label>
         <div style={{ display: 'flex', gap: '10px' }}>
@@ -114,7 +123,7 @@ function App() {
         {photoList.map((photoData, i) =>
           photoData ? (
             <PhotoLi ref={setTarget} key={i} photoData={photoData}>
-              <div></div>
+              <div onClick={() => divClickHandler(photoData.urls.regular)}></div>
               <StyledTitle>{photoData.alt_description}</StyledTitle>
               <StyledParagraph>{photoData.user.name}</StyledParagraph>
             </PhotoLi> //

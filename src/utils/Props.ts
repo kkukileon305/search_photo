@@ -15,3 +15,8 @@ export interface TopBtnProps extends CommonProps {
   page: number;
   onClick: () => void;
 }
+
+export interface ModalPhotoProps extends CommonProps {
+  photoURL: string;
+  setModalState: React.Dispatch<React.SetStateAction<boolean>>;
+}

@@ -25,6 +25,7 @@ const PhotoLi = styled.li<PhotoLiProps>`
     background: url(${(props) => props.photoData.urls.regular});
     background-position: center;
     background-size: cover;
+    cursor: pointer;
   }
 `;
 
