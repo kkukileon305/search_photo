@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { TopBtnProps } from '../utils/Props';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const StyledBtn = styled(motion.button)`
   @font-face {
@@ -38,14 +38,12 @@ const StyledBtn = styled(motion.button)`
 
 const TopBtn = ({ onClick }: TopBtnProps) => {
   return (
-    <AnimatePresence>
-      <StyledBtn //
-        onClick={onClick}
-        animate={{ transform: 'scale(1)' }}
-        exit={{ transform: 'scale(0)' }}
-        whileHover={{ transform: 'scale(1.2)' }}
-      ></StyledBtn>
-    </AnimatePresence>
+    <StyledBtn //
+      onClick={onClick}
+      animate={{ transform: 'scale(1)' }}
+      exit={{ transform: 'scale(0)' }}
+      whileHover={{ transform: 'scale(1.2)' }}
+    ></StyledBtn>
   );
 };
 

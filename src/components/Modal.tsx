@@ -16,11 +16,16 @@ const PhotoModal = ({ photoURL, setModalState }: ModalPhotoProps) => {
         justifyContent: 'center',
         alignItems: 'center',
       }}
-      onClick={() => setModalState(false)}
+      onClick={(e) => {
+        const photoModal = (e.target as HTMLDivElement).closest('div.modalPhoto');
+        !photoModal && setModalState(false);
+      }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
     >
-      <div
+      <motion.div
+        className='modalPhoto'
         style={{
           background: `url(${photoURL})`, //
           backgroundSize: 'cover',
@@ -28,7 +33,9 @@ const PhotoModal = ({ photoURL, setModalState }: ModalPhotoProps) => {
           width: '70vw',
           height: '70vh',
         }}
-      ></div>
+        initial={{ transform: 'scale(0)' }}
+        animate={{ transform: 'scale(1)' }}
+      ></motion.div>
     </motion.div>
   );
 };

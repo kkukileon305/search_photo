@@ -12,6 +12,7 @@ import ErrorDiv from './components/Error';
 import Done from './components/Done';
 import TopBtn from './components/TopBtn';
 import PhotoModal from './components/Modal';
+import { AnimatePresence } from 'framer-motion';
 
 function App() {
   const [columnPage, setColumnPage] = useState(0);
@@ -108,17 +109,29 @@ function App() {
 
   return (
     <>
-      {modalState && <PhotoModal photoURL={modalURL} setModalState={setModalState} />}
+      <AnimatePresence>{modalState && <PhotoModal photoURL={modalURL} setModalState={setModalState} />}</AnimatePresence>
       <Form style={{ width: '90vw' }} onSubmit={onSubmitHandler}>
         <Form.Label style={{ fontSize: '40px' }}>Search Image!</Form.Label>
         <div style={{ display: 'flex', gap: '10px' }}>
-          <Form.Control type='text' placeholder='Image' />
+          <Form.Control
+            style={{
+              border: 'none', //
+              backgroundColor: '#eee',
+              borderRadius: '30px',
+            }}
+            type='text'
+            placeholder='Image'
+          />
           <Button variant='primary' type='submit'>
             Search
           </Button>
         </div>
       </Form>
-      {topBtn && <TopBtn onClick={topBtnHandler} page={realPage} />}
+      <AnimatePresence>
+        {topBtn && ( //
+          <TopBtn onClick={topBtnHandler} page={realPage} />
+        )}
+      </AnimatePresence>
       <PhotoUl>
         {photoList.map((photoData, i) =>
           photoData ? (
