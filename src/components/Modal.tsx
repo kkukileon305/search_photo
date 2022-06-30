@@ -31,10 +31,11 @@ const PhotoModal = ({ photoURL, setModalState }: ModalPhotoProps) => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           width: '70vw',
-          height: '70vh',
+          height: '50vh',
         }}
         initial={{ transform: 'scale(0)' }}
         animate={{ transform: 'scale(1)' }}
+        exit={{ transform: 'scale(0)' }}
       ></motion.div>
     </motion.div>
   );
